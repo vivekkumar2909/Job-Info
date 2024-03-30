@@ -1,6 +1,6 @@
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable prettier/prettier */
-import { Text, StyleSheet, Image } from 'react-native';
+import { Text, StyleSheet, Image, Alert, View } from 'react-native';
 import React, { useState } from 'react';
 import { BG_COLOR } from '../../utils/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,11 +10,14 @@ import CustomSolidBtn from '../../components/CustomSolidBtn';
 import CustomBorderBtn from '../../components/CustomBoredrBtn';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import Loader from '../../components/Loader';
+import firestore from '@react-native-firebase/firestore';
 
 const SignUpForCompany = () => {
   const navigation = useNavigation('');
-  const nameRegex = /^[A-Za-z]+$/;
-  const EmailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  const [loading, setLoading] = useState(false);
+  const [accounCreated, setAccounCreated] = useState(false);
 
   const [name, setName] = useState('');
   const [badname, setBadname] = useState('');
@@ -41,6 +44,9 @@ const SignUpForCompany = () => {
     let valideCompanyName = true;
     let valideCompanyAddress = true;
     let validePassword = true;
+    const nameRegex = /^[A-Za-z]+$/;
+    const EmailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
     if (name === '') {
       valideName = false;
       setBadname('Please Enter Name');
@@ -66,8 +72,8 @@ const SignUpForCompany = () => {
       valideEmail = false;
       setBadEmail('Please Enter Valid Email');
     }
-    else if (name !== '' && email.length >= 3 && email.toString().match(EmailRegex)) {
-      valideName = true;
+    else if (email !== '' && email.length >= 3 && email.toString().match(EmailRegex)) {
+      valideEmail = true;
       setBadEmail('');
     }
 
@@ -90,28 +96,25 @@ const SignUpForCompany = () => {
       setBadContact('');
     }
 
-    if (companyName ==='')
-    {
+    if (companyName === '') {
       valideCompanyName = false;
       setBadCompanyName('Please Enter Company Name');
     }
-    else if (companyName !== '' ) {
-      valideCompanyName = false;
+    else if (companyName !== '') {
+      valideCompanyName = true;
       setBadCompanyName('');
     }
 
-    if (companyAddress ==='')
-    {
+    if (companyAddress === '') {
       valideCompanyAddress = false;
       setBadCompanyAddress('Please Enter Company Address');
     }
-    else if (companyAddress !== '' ) {
-      valideCompanyAddress = false;
+    else if (companyAddress !== '') {
+      valideCompanyAddress = true;
       setBadCompanyAddress('');
     }
 
-    if (password ==='')
-    {
+    if (password === '') {
       validePassword = false;
       setBadPassword('Please Enter Password');
     }
@@ -128,42 +131,89 @@ const SignUpForCompany = () => {
 
   };
 
+  const registerUser = () => {
+    setLoading(true);
+    firestore().collection('companies').add({
+      name,
+      email,
+      contact,
+      companyName,
+      companyAddress,
+      password,
+    }).then(() => {
+      setName('');
+      setEmail('');
+      setContact('');
+      setCompanyName('');
+      setCompanyAddress('');
+      setPassword('');
+      setLoading(false);
+      setAccounCreated(true);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 2000);
+    }).catch(err => {
+      setLoading(false);
+      Alert.alert(err.message);
+      console.log(err);
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Image source={require('../../images/logo.png')} style={styles.logo} />
-        <Text style={styles.title}>Create Account </Text>
-        <CustomInput
-          value={name}
-          onChangeText={txt => { setName(txt); }}
-          title={'Name'}
-          placeholder={'xyz'}
-          bad={badname !== '' ? true : false}
-        />
+      {accounCreated ? <View style={styles.doneView}>
+        <Image source={require('../../images/check.png')} style={styles.logo} />
+        <Text style={styles.title}>Account Created</Text>
+      </View>
+        :
+        <ScrollView>
+          <Image source={require('../../images/logo.png')} style={styles.logo} />
 
-        {badname !== '' && <Text style={styles.errMsg}>{badname}</Text>}
-        <CustomInput
-          value={email}
-          onChangeText={txt => { setEmail(txt); }}
-          title={'Email'} placeholder={'xyz@gmail.com'} bad={badEmail !== '' ? true : false} />
+          <Text style={styles.title}>Create Account </Text>
+
+          <CustomInput
+            value={name}
+            onChangeText={txt => { setName(txt); }}
+            title={'Name'}
+            placeholder={'xyz'}
+            bad={badname !== '' ? true : false}
+          />
+
+          {badname !== '' && <Text style={styles.errMsg}>{badname}</Text>}
+
+          <CustomInput
+            value={email}
+            onChangeText={txt => { setEmail(txt); }}
+            title={'Email'} placeholder={'xyz@gmail.com'} bad={badEmail !== '' ? true : false} />
           {badEmail !== '' && <Text style={styles.errMsg}>{badEmail}</Text>}
-        <CustomInput value={contact}
-          onChangeText={txt => { setContact(txt); }} title={'Contact'} placeholder={'+91 96089*****'} />
-        <CustomInput value={companyName}
-          onChangeText={txt => { setCompanyName(txt); }} title={'Company Name'} placeholder={'ex google, MicroSoft'} />
-        <CustomInput value={companyAddress}
-          onChangeText={txt => { setCompanyAddress(txt); }} title={'Address'} placeholder={'ex. Delhi'} />
-        <CustomInput value={password}
-          onChangeText={txt => { setPassword(txt); }} title={'Password'} placeholder={'********'} />
-        {/* <Text style={styles.forgotPassword}> Forgot Password?</Text> */}
-        <CustomSolidBtn title={'Sign Up'} onClick={() => {
-          if (validate()) {
 
-          }
-        }} />
-        <CustomBorderBtn title={'Log In'} onClick={() =>
-          navigation.goBack()} />
-      </ScrollView>
+          <CustomInput value={contact}
+            onChangeText={txt => { setContact(txt); }} title={'Contact'} placeholder={'+91 96089*****'} bad={badContact !== '' ? true : false} />
+          {badContact !== '' && <Text style={styles.errMsg}>{badContact}</Text>}
+
+          <CustomInput value={companyName}
+            onChangeText={txt => { setCompanyName(txt); }} title={'Company Name'} placeholder={'ex google, MicroSoft'} bad={badCompanyName !== '' ? true : false} />
+          {badCompanyName !== '' && <Text style={styles.errMsg}>{badCompanyName}</Text>}
+
+          <CustomInput value={companyAddress}
+            onChangeText={txt => { setCompanyAddress(txt); }} title={'Address'} placeholder={'ex. Delhi'} bad={badCompanyAddress !== '' ? true : false} />
+          {badCompanyAddress !== '' && <Text style={styles.errMsg}>{badCompanyAddress}</Text>}
+
+          <CustomInput value={password}
+            onChangeText={txt => { setPassword(txt); }} title={'Password'} placeholder={'********'} bad={badPassword !== '' ? true : false} />
+          {badPassword !== '' && <Text style={styles.errMsg}>{badPassword}</Text>}
+
+          <CustomSolidBtn title={'Sign Up'} onClick={() => {
+            if (validate()) {
+              registerUser();
+              // Alert.alert('Ready To Send Data on Server');
+            }
+          }} />
+
+          <CustomBorderBtn title={'Log In'} onClick={() =>
+            navigation.goBack()} />
+          <Loader visible={loading} />
+        </ScrollView>
+      }
     </SafeAreaView>
   );
 };
@@ -202,5 +252,11 @@ const styles = StyleSheet.create({
     color: 'red',
     // fontSize: moderateScale(17),
     marginTop: moderateVerticalScale(10),
+  },
+  doneView: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
