@@ -7,11 +7,15 @@ import { BG_COLOR } from '../utils/Colors';
 import { TextInput } from 'react-native-gesture-handler';
 
 
-const CustomInput = ({ title, placeholder, value, onChangeText, bad }) => {
+const CustomInput = ({ title, placeholder, value, onChangeText, bad, keyboardType }) => {
   return (
     <View style={[styles.input, { borderColor: bad ? 'red' : '#9e9e9e' }]}>
       <Text style={[styles.title, { color: bad ? 'red' : 'black' }]}>{title}</Text>
-      <TextInput value={value} onChangeText={text => onChangeText(text)} placeholder={placeholder} />
+      <TextInput
+        value={value}
+        onChangeText={text => onChangeText(text)}
+        placeholder={placeholder}
+        keyboardType={keyboardType ? keyboardType : 'default'} />
     </View>
   );
 };

@@ -2,12 +2,12 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const CompanyProfile = () => {
+const Chats = () => {
   return (
     <View>
-      <Text>CompanyProfile</Text>
+      <Text>Chats</Text>
     </View>
   );
 };
 
-export default CompanyProfile;
+export default Chats;

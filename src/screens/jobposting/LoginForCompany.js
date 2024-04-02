@@ -62,14 +62,6 @@ const LoginForCompany = () => {
       setLoading(false);
       console.log(data.docs);
       if (data.docs.length > 0) {
-        // if (data.docs[0]._data.password === password) {
-        //   setBadEmail('');
-        //   setBadPassword('');
-        // }
-        // else {
-        //   setBadPassword('Wrong Password');
-        // }
-
         data.docs.forEach(item => {
           if (item.data().password === password) {
             setBadEmail('');

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginForCompany from '../screens/jobposting/LoginForCompany';
 import SignUpForCampany from '../screens/jobposting/SignUpForCampany';
 import DashboardForCompany from '../screens/jobposting/DashboardForCompany';
+import AddJob from '../screens/jobposting/tabs/AddJob';
 
 
 const STACK = createStackNavigator();
@@ -15,6 +16,7 @@ const JobPostingNavigator = () => {
       <STACK.Screen name="LoginForCampany" component={LoginForCompany} options={{headerShown:false}}  />
       <STACK.Screen name="SignUpForCampany" component={SignUpForCampany} options={{headerShown:false}}  />
       <STACK.Screen name="DashboardForCompany" component={DashboardForCompany} options={{headerShown:false}}  />
+      <STACK.Screen name="AddJob" component={AddJob} options={{headerShown:false}}  />
     </STACK.Navigator>
   );
 };
