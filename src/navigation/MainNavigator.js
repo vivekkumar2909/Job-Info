@@ -9,6 +9,7 @@ import SelectUser from '../screens/onboarding/SelectUser';
 import JobSerachingNavigator from './JobSerachingNavigator';
 import DashboardForCompany from '../screens/jobposting/DashboardForCompany';
 import AddJob from '../screens/jobposting/tabs/AddJob';
+import EditJob from '../screens/jobposting/tabs/EditJob';
 const STACK = createStackNavigator();
 
 const MainNavigator = () => {
@@ -20,6 +21,7 @@ const MainNavigator = () => {
         <STACK.Screen name="JobPostingNavigator" component={JobPostingNavigator} options={{ headerShown: false }} />
         <STACK.Screen name="DashboardForCompany" component={DashboardForCompany} options={{headerShown:false}}  />
         <STACK.Screen name="AddJob" component={AddJob} options={{headerShown:false}}  />
+        <STACK.Screen name="EditJob" component={EditJob} options={{headerShown:false}}  />
         <STACK.Screen name="JobSearching" component={JobSerachingNavigator} options={{ headerShown: false }} />
       </STACK.Navigator>
     </NavigationContainer>

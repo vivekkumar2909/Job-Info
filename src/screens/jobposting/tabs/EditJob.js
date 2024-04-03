@@ -9,13 +9,16 @@ import { FlatList } from 'react-native-gesture-handler';
 import CustomInput from '../../../components/CustomInput';
 import CustomDropDown from '../../../components/CustomDropDown';
 import CustomSolidBtn from '../../../components/CustomSolidBtn';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Profiles } from '../../../utils/Profiles';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../../components/Loader';
 
-const AddJob = () => {
+const EditJob = () => {
+
+    const router = useRoute();
+
     const [jobTitle, setJobTitle] = useState('');
     const [jobdes, setJobDesc] = useState('');
     const [jobexp, setJobExp] = useState('');
@@ -62,7 +65,7 @@ const AddJob = () => {
                 >
                     <Image style={styles.back} source={require('../../../images/arrow.png')} />
                 </TouchableOpacity>
-                <Text style={styles.post}>Post Job</Text>
+                <Text style={styles.post}>Edit Job</Text>
             </View>
             <CustomInput
                 value={jobTitle}
@@ -111,7 +114,7 @@ const AddJob = () => {
             // bad={badEmail !== '' ? true : false}
             />
 
-            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Post Job'} onClick={() => { postJob(); }} />
+            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Edit Job'} onClick={() => { postJob(); }} />
             <Modal visible={openModalCategory} transparent style={{ flex: 1 }}>
                 <View style={styles.modalMainView}>
                     <View style={styles.listingView}>
@@ -168,7 +171,7 @@ const AddJob = () => {
     );
 };
 
-export default AddJob;
+export default EditJob;
 
 const styles = StyleSheet.create({
     container: {
