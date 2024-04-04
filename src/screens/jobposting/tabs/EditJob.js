@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import { View, Text, StyleSheet, Image, Modal, Alert, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BG_COLOR } from '../../../utils/Colors';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,11 +19,11 @@ const EditJob = () => {
 
     const router = useRoute();
 
-    const [jobTitle, setJobTitle] = useState('');
-    const [jobdes, setJobDesc] = useState('');
-    const [jobexp, setJobExp] = useState('');
-    const [jobpac, setPackage] = useState('');
-    const [jobcom, setJobComp] = useState('');
+    const [jobTitle, setJobTitle] = useState(router.params.data.jobTitle);
+    const [jobdes, setJobDesc] = useState(router.params.data.jobdes);
+    const [jobexp, setJobExp] = useState(router.params.data.jobexp);
+    const [jobpac, setPackage] = useState(router.params.data.jobpac);
+    const [jobcom, setJobComp] = useState(router.params.data.jobcom);
     const [jobSkill, setJobSkill] = useState('');
     const [jobCategory, setJobCategory] = useState('');
     const [openModalCategory, setOpenModalCategory] = useState(false);
@@ -31,12 +31,57 @@ const EditJob = () => {
     const [selectedCategory, setSelectedCategory] = useState('Select Category');
     const [selectedSkill, setSelectedSkill] = useState('Select Skill');
     const [loading, setLoading] = useState(false);
+    const [badTitle, setbadTitle] = useState('');
+    const [badDes, setbadDes] = useState('');
+    const [badExp, setbadExp] = useState('');
+    const [badPac, setbadPac] = useState('');
+    const [badCom, setbadCom] = useState('');
+    const [badSkill, setbadSkill] = useState('');
+    const [badCategory, setbadCategory] = useState('');
+
+    const Validate = () => {
+        let ValideTitle = false;
+        let valideDes = false;
+        let valideExp = false;
+        let validePac = false;
+        let valideCom = false;
+        let valideSkill = false;
+        let valideCategory = false;
+
+        if (jobTitle === '') {
+            ValideTitle = true;
+            setbadTitle('Enter Job Title');
+        }else{
+            ValideTitle = false;
+            setbadTitle('');
+        }
+        if (jobdes === '') {
+            valideDes = true;
+            setbadTitle('Enter Job Description');
+        }else{
+            valideDes = false;
+            setbadTitle('');
+        }
+    };
+
+    useEffect(() => {
+        Profiles.map((item, index) => {
+            if (item.category === router.params.data.category) {
+                setSelectedCategory(index);
+                Profiles[index].keywords.map((x, y) => {
+                    if (x[0] === router.params.data.jobSkill) {
+                        setSelectedSkill(x[0]);
+                    }
+                });
+            }
+        });
+    }, []);
 
     const postJob = async () => {
         let id = await AsyncStorage.getItem('USER_ID');
         let name = await AsyncStorage.getItem('NAME');
         setLoading(true);
-        firestore().collection('jobs').add({
+        firestore().collection('jobs').doc(router.params.data.id).update({
             postedBy: id,
             postName: name,
             jobTitle,
@@ -166,7 +211,7 @@ const EditJob = () => {
                     </View>
                 </View>
             </Modal>
-            <Loader visible={loading}/>
+            <Loader visible={loading} />
         </SafeAreaView>
     );
 };
