@@ -31,39 +31,6 @@ const EditJob = () => {
     const [selectedCategory, setSelectedCategory] = useState('Select Category');
     const [selectedSkill, setSelectedSkill] = useState('Select Skill');
     const [loading, setLoading] = useState(false);
-    const [badTitle, setbadTitle] = useState('');
-    const [badDes, setbadDes] = useState('');
-    const [badExp, setbadExp] = useState('');
-    const [badPac, setbadPac] = useState('');
-    const [badCom, setbadCom] = useState('');
-    const [badSkill, setbadSkill] = useState('');
-    const [badCategory, setbadCategory] = useState('');
-
-    const Validate = () => {
-        let ValideTitle = false;
-        let valideDes = false;
-        let valideExp = false;
-        let validePac = false;
-        let valideCom = false;
-        let valideSkill = false;
-        let valideCategory = false;
-
-        if (jobTitle === '') {
-            ValideTitle = true;
-            setbadTitle('Enter Job Title');
-        }else{
-            ValideTitle = false;
-            setbadTitle('');
-        }
-        if (jobdes === '') {
-            valideDes = true;
-            setbadTitle('Enter Job Description');
-        }else{
-            valideDes = false;
-            setbadTitle('');
-        }
-    };
-
     useEffect(() => {
         Profiles.map((item, index) => {
             if (item.category === router.params.data.category) {
@@ -159,7 +126,10 @@ const EditJob = () => {
             // bad={badEmail !== '' ? true : false}
             />
 
-            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Edit Job'} onClick={() => { postJob(); }} />
+            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Edit Job'} onClick={() => {
+                navigation.goBack();
+            }}
+            />
             <Modal visible={openModalCategory} transparent style={{ flex: 1 }}>
                 <View style={styles.modalMainView}>
                     <View style={styles.listingView}>

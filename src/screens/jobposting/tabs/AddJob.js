@@ -29,6 +29,94 @@ const AddJob = () => {
     const [selectedSkill, setSelectedSkill] = useState('Select Skill');
     const [loading, setLoading] = useState(false);
 
+    const [badTitle, setbadTitle] = useState('');
+    const [badDes, setbadDes] = useState('');
+    const [badExp, setbadExp] = useState('');
+    const [badPac, setbadPac] = useState('');
+    const [badCom, setbadCom] = useState('');
+    const [badSkill, setbadSkill] = useState('');
+    const [badCategory, setbadCategory] = useState('');
+
+    const ValidatePost = () => {
+        let ValideTitle = false;
+        let valideDes = false;
+        let valideExp = false;
+        let validePac = false;
+        let valideCom = false;
+        let valideSkill = false;
+        let valideCategory = false;
+
+        if (jobTitle === '') {
+            ValideTitle = false;
+            setbadTitle('Enter Job Title');
+        } else {
+            ValideTitle = true;
+            setbadTitle('');
+        }
+        if (jobdes === '') {
+            valideDes = false;
+            setbadDes('Enter Job Description');
+        } else if (jobdes !== '' && jobdes.length < 50) {
+            valideDes = false;
+            setbadDes('Enter Job more Description');
+        }
+        else {
+            valideDes = true;
+            setbadDes('');
+        }
+
+        const contactRegex = /^\d+$/;
+
+        if (jobexp === '') {
+            valideExp = true;
+            setbadExp('Enter Job Experience');
+        } else if (jobexp !== '' && jobexp.length > 2) {
+            valideExp = false;
+            setbadExp('Enter Valid Job Experience');
+        }
+        else if (jobexp !== '' && jobexp.length <= 2 && jobexp.match(contactRegex)) {
+            valideExp = true;
+            setbadExp('');
+        }
+
+        if (jobpac === '') {
+            validePac = false;
+            setbadTitle('Enter Job Package');
+        } else if (jobpac !== '' && !jobpac.match(contactRegex)) {
+            validePac = false;
+            setbadPac('Please enter Valid Job Package');
+        }
+        else if (jobpac !== '' && jobpac.match(contactRegex)) {
+            validePac = true;
+            setbadPac('');
+        }
+
+        if (jobcom === '') {
+            valideCom = false;
+            setbadCom('Enter Company Name');
+        } else {
+            valideCom = true;
+            setbadCom('');
+        }
+
+        if (selectedCategory === 'Select Category') {
+            valideCategory = false;
+            setbadCategory('Plaese Select a Category');
+        } else {
+            valideCategory = true;
+            setbadCategory('');
+        }
+        if (selectedSkill === 'Select Skill') {
+            valideSkill = false;
+            setbadSkill('Plaese Select a Skill');
+        } else {
+            valideSkill = true;
+            setbadSkill('');
+        }
+
+        return valideCategory && valideCom && valideDes && valideExp && valideSkill && ValideTitle && validePac;
+    };
+
     const postJob = async () => {
         let id = await AsyncStorage.getItem('USER_ID');
         let name = await AsyncStorage.getItem('NAME');
@@ -70,6 +158,7 @@ const AddJob = () => {
                 title={'Job Title'} placeholder={'ex. web development'}
             // bad={badEmail !== '' ? true : false}
             />
+            {badTitle !== '' && <Text> {badTitle}</Text>}
             <CustomInput
                 value={jobdes}
                 onChangeText={txt => { setJobDesc(txt); }}
@@ -111,7 +200,11 @@ const AddJob = () => {
             // bad={badEmail !== '' ? true : false}
             />
 
-            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Post Job'} onClick={() => { postJob(); }} />
+            <CustomSolidBtn style={{ marginTop: verticalScale(50) }} title={'Post Job'} onClick={() => {
+                if (ValidatePost()) {
+                    postJob();
+                }
+            }} />
             <Modal visible={openModalCategory} transparent style={{ flex: 1 }}>
                 <View style={styles.modalMainView}>
                     <View style={styles.listingView}>
@@ -163,7 +256,7 @@ const AddJob = () => {
                     </View>
                 </View>
             </Modal>
-            <Loader visible={loading}/>
+            <Loader visible={loading} />
         </SafeAreaView>
     );
 };
