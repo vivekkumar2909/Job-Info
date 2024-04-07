@@ -60,15 +60,15 @@ const styles = StyleSheet.create({
   },
   btnTxt1: {
     color: '#fff',
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(24),
     fontWeight: '500',
-    paddingHorizontal: moderateScale(60),
+    paddingHorizontal: moderateScale(27),
   },
   btnTxt2: {
     color: '#fff',
     fontSize: moderateScale(24),
     fontWeight: '500',
-    paddingHorizontal: moderateScale(60),
+    paddingHorizontal: moderateScale(70),
   },
   logo: {
     width: scale(100),

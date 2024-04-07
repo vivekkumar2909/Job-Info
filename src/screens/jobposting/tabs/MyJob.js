@@ -20,11 +20,12 @@ const MyJob = () => {
 
   const getJobs = async () => {
     let id = await AsyncStorage.getItem('USER_ID');
-    firestore().collection('jobs').where('postedBy', '==', id).get().then(data => {
+    firestore().collection('jobs').where('postedBy', '==', id).get().then(async (data) => {
       let temp = [];
       data.docs.forEach(item => {
         temp.push({ ...item.data(), id: item.id });
       });
+      await AsyncStorage.setItem('JOBS', temp.length + '');
       setJobs(temp);
     });
   };
@@ -51,7 +52,7 @@ const MyJob = () => {
               <Text style={styles.salary}>{'Category: ' + item.jobCategory}</Text>
               <Text style={styles.salary}>{'Skill: ' + item.jobSkill}</Text>
               <View style={styles.bottomView}>
-                <TouchableOpacity onPress={()=>{navigation.navigate('EditJob',{data:item});}} style={styles.editbtn}>
+                <TouchableOpacity onPress={() => { navigation.navigate('EditJob', { data: item }); }} style={styles.editbtn}>
                   <Text>Edit Job</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteJob(item.id)} style={styles.deletebtn}>
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     width: '100%',
-    height:'100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: moderateScale(10),

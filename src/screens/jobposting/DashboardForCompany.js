@@ -19,7 +19,7 @@ const DashboardForCompany = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>
-                {selectedTab === 0 ? (<MyJob />) : selectedTab === 1 ? (<SearchUser />) : selectedTab === 2 ? (<Chats />) : selectedTab === 3 ? (<CompanyProfile />) : (<MyJob />)};
+                {selectedTab === 0 ? (<MyJob />) : selectedTab === 1 ? (<SearchUser />) : selectedTab === 2 ? (<Chats />) : selectedTab === 3 ? (<CompanyProfile onJobsClick={() => { setSelectedTab(0); }} />) : (<MyJob />)};
             </Text>
             <View style={styles.bottomView}>
                 <TouchableOpacity
@@ -33,8 +33,8 @@ const DashboardForCompany = () => {
                     <Image style={[styles.iconTab, { tintColor: selectedTab === 1 ? 'green' : 'black' }]} source={require('../../images/search-user.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={()=>{navigation.navigate('AddJob')}}
-                style={styles.bottomTab}>
+                    onPress={() => { navigation.navigate('AddJob') }}
+                    style={styles.bottomTab}>
                     <Image style={styles.iconTab} source={require('../../images/add.png')} />
                 </TouchableOpacity>
                 <TouchableOpacity
