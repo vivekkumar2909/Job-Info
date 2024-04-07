@@ -6,6 +6,7 @@ import { BG_COLOR } from '../../../utils/Colors';
 import { moderateScale, scale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useIsFocused} from '@react-navigation/native';
+import ProfileOptionsItem from '../../../components/ProfileOptionsItem';
 const CompanyProfile = () => {
   const [name, setName] = useState();
   const isFocused = useIsFocused();
@@ -27,6 +28,8 @@ const CompanyProfile = () => {
       </TouchableOpacity>
       <Text style={styles.name}>{name }</Text>
       <Text style={styles.ChangeProfile}>Edit Profile Picture</Text>
+      <ProfileOptionsItem/>
+      {/* <Text>Hii</Text> */}
     </View>
   );
 };
