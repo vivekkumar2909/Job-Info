@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { BG_COLOR } from '../../../utils/Colors';
 import { moderateScale, scale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useIsFocused,useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ProfileOptionsItem from '../../../components/ProfileOptionsItem';
-const CompanyProfile = ({onJobsClick}) => {
+const CompanyProfile = ({ onJobsClick }) => {
   const navigation = useNavigation();
   const [name, setName] = useState();
-  const [jobs,setJobs] = useState();
+  const [jobs, setJobs] = useState();
   const isFocused = useIsFocused();
   useEffect(() => {
     getData();
@@ -30,15 +30,15 @@ const CompanyProfile = ({onJobsClick}) => {
         />
       </TouchableOpacity>
       <Text style={styles.name}>{name}</Text>
-      <Text style={styles.ChangeProfile}>Edit Profile Picture</Text>
+      <Text style={styles.ChangeProfile} onPress={() => { navigation.navigate('ChangeProfilePic') }}>Edit Profile Picture</Text>
       <View style={styles.StyleOptions}>
-      <ProfileOptionsItem icon={require('../../../images/suitcase.png')} title={'My Jobs (' + jobs + ')'} onClick={()=>onJobsClick()} />
-      <ProfileOptionsItem icon={require('../../../images/contact-us.png')} title={'Contact Us'} />
-      <ProfileOptionsItem icon={require('../../../images/theme.png')} title={'App Theme'} />
-      <ProfileOptionsItem icon={require('../../../images/logout.png')} title={'Log Out'} />
+        <ProfileOptionsItem icon={require('../../../images/suitcase.png')} title={'My Jobs (' + jobs + ')'} onClick={() => onJobsClick()} />
+        <ProfileOptionsItem icon={require('../../../images/contact-us.png')} title={'Contact Us'} />
+        <ProfileOptionsItem icon={require('../../../images/theme.png')} title={'App Theme'} />
+        <ProfileOptionsItem icon={require('../../../images/logout.png')} title={'Log Out'} />
       </View>
-      <TouchableOpacity onPress={()=>{navigation.navigate('UpdatePageOfProfile')}} style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: scale(20),marginLeft:scale(20)  }}>
-        <Image source={require('../../../images/edit.png')} style={{ width: scale(30), height: scale(30) ,paddingLeft:scale(20) }} />
+      <TouchableOpacity onPress={() => { navigation.navigate('UpdatePageOfProfile') }} style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: scale(20), marginLeft: scale(20) }}>
+        <Image source={require('../../../images/edit.png')} style={{ width: scale(30), height: scale(30), paddingLeft: scale(20) }} />
       </TouchableOpacity>
     </View>
   );
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(20),
   },
   StyleOptions: {
-    marginTop:scale(40),
+    marginTop: scale(40),
   },
 });
