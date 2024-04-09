@@ -54,3 +54,5 @@ const styles = StyleSheet.create({
     // marginBottom:moderateScale(20),
   },
 });
+
+console.log('Jai Shree Ram');
