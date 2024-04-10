@@ -55,4 +55,3 @@ const styles = StyleSheet.create({
   },
 });
 
-console.log('Jai Shree Ram');
