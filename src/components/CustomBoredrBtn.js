@@ -11,6 +11,8 @@ const CustomBorderBtn = ({title,onClick}) => {
   );
 };
 
+//This is Button
+
 export default CustomBorderBtn;
 
 const styles = StyleSheet.create({
