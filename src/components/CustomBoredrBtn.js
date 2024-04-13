@@ -12,6 +12,7 @@ const CustomBorderBtn = ({title,onClick}) => {
 };
 
 //This is Button For React Native
+//styles object
 
 
 export default CustomBorderBtn;
